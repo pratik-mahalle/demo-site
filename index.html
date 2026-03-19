@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kreuzberg — Live Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --surface: #111114;
+      --surface2: #16161a;
+      --border: #222228;
+      --border2: #2e2e38;
+      --accent: #6366f1;
+      --accent-lo: rgba(99, 102, 241, 0.10);
+      --green: #22c55e;
+      --green-lo: rgba(34, 197, 94, 0.10);
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #f4f4f5;
+      --muted: #71717a;
+      --dimmer: #52525b;
+      --radius: 10px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 15px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Geist', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(600px 400px at 20% 0%, rgba(99, 102, 241, 0.07) 0%, transparent 60%),
+        radial-gradient(400px 300px at 80% 100%, rgba(34, 197, 94, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .z {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.88);
+      backdrop-filter: blur(16px);
+      gap: 16px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-pill {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-lo);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 100px;
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: color .15s, background .15s;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .nav-link.cta {
+      color: var(--text);
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+    }
+
+    .nav-link.cta:hover {
+      border-color: var(--accent);
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 72px 36px 56px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(38px, 6vw, 62px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+
+    .format-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .fmt {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--dimmer);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 7px;
+      letter-spacing: 0.3px;
+    }
+
+    /* DEMO */
+    .demo {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 36px 96px;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      width: fit-content;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--dimmer);
+      transition: background .3s;
+      flex-shrink: 0;
+    }
+
+    .status-dot.loading {
+      background: var(--amber);
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    .status-dot.ready {
+      background: var(--green);
+    }
+
+    .status-dot.error {
+      background: var(--red);
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .dropzone {
+      border: 2px dashed var(--border2);
+      border-radius: 14px;
+      background: var(--surface);
+      padding: 64px 36px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .dropzone:hover,
+    .dropzone.drag-over {
+      border-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      font-size: 22px;
+    }
+
+    .drop-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .drop-sub {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .drop-sub strong {
+      color: var(--dimmer);
+      font-weight: 500;
+    }
+
+    .drop-formats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    /* results */
+    .result-panel {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .result-panel.visible {
+      display: flex;
+    }
+
+    .file-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .file-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--accent-lo);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .file-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .file-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-family: 'Geist Mono', monospace;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      font-family: 'Geist', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 7px;
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      color: var(--muted);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      color: var(--text);
+      border-color: var(--dimmer);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .btn.ghost:hover {
+      background: var(--surface2);
+      border-color: var(--border);
+    }
+
+    .timing-chip {
+      display: none;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      color: var(--green);
+      background: var(--green-lo);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 5px;
+      padding: 3px 8px;
+    }
+
+    .timing-chip.visible {
+      display: inline-block;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .stat-val {
+      font-family: 'Geist Mono', monospace;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -.5px;
+    }
+
+    .stat-key {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 2px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 4px;
+      width: fit-content;
+      margin-bottom: 12px;
+    }
+
+    .tab {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-radius: 7px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .tab:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .tab.active {
+      color: var(--text);
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+    }
+
+    .output-area {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .output-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      gap: 12px;
+    }
+
+    .output-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .3px;
+    }
+
+    .processing {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 64px;
+      flex-direction: column;
+    }
+
+    .processing.visible {
+      display: flex;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .processing-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Geist Mono', monospace;
+    }
+
+    .output-body {
+      padding: 20px;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: #a1a1aa;
+      min-height: 260px;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    /* JSON view */
+    .json-output {
+      display: none;
+      padding: 20px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      min-height: 260px;
+      max-height: 480px;
+      overflow-y: auto;
+      white-space: pre;
+      word-break: break-all;
+    }
+    .json-output.visible { display: block; }
+    .json-output::-webkit-scrollbar { width: 5px; }
+    .json-output::-webkit-scrollbar-track { background: transparent; }
+    .json-output::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    /* JSON syntax colors */
+    .json-key    { color: #93c5fd; }
+    .json-str    { color: #86efac; }
+    .json-num    { color: #fca5a5; }
+    .json-bool   { color: #c4b5fd; }
+    .json-null   { color: var(--dimmer); }
+
+    .output-body h1,
+    .output-body h2,
+    .output-body h3,
+    .output-body h4,
+    .output-body h5,
+    .output-body h6 {
+      color: var(--text);
+      font-family: 'Geist', sans-serif;
+      margin: 1.2em 0 0.4em;
+      line-height: 1.3;
+    }
+
+    .output-body h1 {
+      font-size: 1.5em;
+    }
+
+    .output-body h2 {
+      font-size: 1.25em;
+    }
+
+    .output-body h3 {
+      font-size: 1.1em;
+    }
+
+    .output-body p {
+      margin: 0.6em 0;
+    }
+
+    .output-body ul,
+    .output-body ol {
+      padding-left: 1.5em;
+      margin: 0.6em 0;
+    }
+
+    .output-body li {
+      margin: 0.25em 0;
+    }
+
+    .output-body code {
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: #c4b5fd;
+    }
+
+    .output-body pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      margin: 0.8em 0;
+    }
+
+    .output-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #a1a1aa;
+      font-size: 12px;
+    }
+
+    .output-body strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .output-body em {
+      color: #c4b5fd;
+      font-style: italic;
+    }
+
+    .output-body blockquote {
+      border-left: 3px solid var(--border2);
+      padding-left: 1em;
+      margin: 0.8em 0;
+      color: var(--muted);
+    }
+
+    .output-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.2em 0;
+    }
+
+    .output-body a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .output-body a:hover {
+      text-decoration: underline;
+    }
+
+    .output-body.hidden {
+      display: none;
+    }
+
+    .output-body::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .output-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .output-body::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 3px;
+    }
+
+    .meta-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .meta-grid.visible {
+      display: grid;
+    }
+
+    .meta-item {
+      padding: 12px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .meta-key {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+      font-family: 'Geist Mono', monospace;
+    }
+
+    .meta-value {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+      word-break: break-word;
+    }
+
+    .tables-view {
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tables-view.visible {
+      display: flex;
+    }
+
+    .tbl-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      font-family: 'Geist Mono', monospace;
+    }
+
+    th {
+      background: var(--surface2);
+      color: var(--text);
+      font-weight: 600;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border2);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 7px 12px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: var(--surface2);
+    }
+
+    .empty-state {
+      padding: 40px;
+      text-align: center;
+      color: var(--dimmer);
+      font-size: 13px;
+    }
+
+    .error-banner {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: #fca5a5;
+      margin-bottom: 16px;
+    }
+
+    .error-banner.visible {
+      display: flex;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left {
+      font-size: 12px;
+      color: var(--dimmer);
+    }
+
+    .footer-left a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-left a:hover {
+      color: var(--text);
+    }
+
+    .install-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .install-chip {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .hero {
+        padding: 48px 20px 40px;
+      }
+
+      .demo {
+        padding: 0 20px 72px;
+      }
+
+      footer {
+        padding: 20px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      animation: fadeUp .5s ease both;
+    }
+
+    .status-bar {
+      animation: fadeUp .5s .1s ease both;
+    }
+
+    .dropzone {
+      animation: fadeUp .5s .15s ease both;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="z">
+    <a href="https://kreuzberg.dev" class="nav-logo" target="_blank">
+      <div class="logo-mark">K</div>
+      <span class="logo-text">Kreuzberg</span>
+    </a>
+    <span class="nav-pill">live demo</span>
+    <div class="nav-links">
+      <a href="https://docs.kreuzberg.dev" class="nav-link" target="_blank">Docs</a>
+      <a href="https://github.com/kreuzberg-dev/kreuzberg" class="nav-link cta" target="_blank">GitHub ↗</a>
+    </div>
+  </nav>
+
+  <section class="hero z">
+    <div class="hero-eyebrow">
+      <span></span>
+      Rust core · WebAssembly · zero server
+    </div>
+    <h1>Extract text from<br><em>any document</em></h1>
+    <p>Drop a file. Kreuzberg extracts text, tables, and metadata instantly — no server, no upload, no API key.
+      Everything runs in your browser via WebAssembly.</p>
+    <div class="format-pills">
+      <span class="fmt">PDF</span>
+      <span class="fmt">DOCX</span>
+      <span class="fmt">XLSX</span>
+      <span class="fmt">PPTX</span>
+      <span class="fmt">PNG / JPG</span>
+      <span class="fmt">HTML</span>
+      <span class="fmt">CSV</span>
+      <span class="fmt">EPUB</span>
+      <span class="fmt">EML</span>
+      <span class="fmt">ZIP</span>
+      <span class="fmt">+ 78 more</span>
+    </div>
+  </section>
+
+  <main class="demo z">
+
+    <div class="status-bar">
+      <div class="status-dot loading" id="statusDot"></div>
+      <span id="statusMsg">Loading Kreuzberg WASM…</span>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" />
+      <div class="drop-icon">📄</div>
+      <div class="drop-title">Drop a file or click to browse</div>
+      <div class="drop-sub">
+        Processed entirely in your browser via WebAssembly.<br>
+        <strong>Your file never leaves your device.</strong>
+      </div>
+      <div class="drop-formats">
+        <span class="fmt">PDF</span>
+        <span class="fmt">DOCX · PPTX · XLSX</span>
+        <span class="fmt">PNG · JPG · WEBP</span>
+        <span class="fmt">HTML</span>
+        <span class="fmt">CSV · EML · EPUB · ZIP…</span>
+      </div>
+    </div>
+
+    <div class="error-banner" id="errorBanner">
+      <span>⚠</span>
+      <span id="errorMsg">Something went wrong.</span>
+    </div>
+
+    <div class="result-panel" id="resultPanel">
+
+      <div class="file-card">
+        <div class="file-info">
+          <div class="file-icon" id="fileIconEl">📄</div>
+          <div>
+            <div class="file-name" id="fileNameEl">—</div>
+            <div class="file-meta" id="fileMetaEl">—</div>
+          </div>
+        </div>
+        <div class="file-actions">
+          <div class="timing-chip" id="timingChip"></div>
+          <button class="btn" id="copyBtn">Copy</button>
+          <button class="btn ghost" id="resetBtn">← New file</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val" id="statChars">—</div>
+          <div class="stat-key">characters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statWords">—</div>
+          <div class="stat-key">words</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statPages">—</div>
+          <div class="stat-key">pages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statTables">—</div>
+          <div class="stat-key">tables</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="tabs">
+          <button class="tab active" data-tab="md">MD</button>
+          <button class="tab" data-tab="json">JSON</button>
+        </div>
+
+        <div class="output-area">
+          <div class="output-topbar">
+            <span class="output-label" id="outputLabel">MARKDOWN</span>
+            <span id="outputCount" style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted)"></span>
+          </div>
+
+          <div class="processing" id="processingEl">
+            <div class="spinner"></div>
+            <span class="processing-label">Extracting…</span>
+          </div>
+
+          <div class="output-body" id="mdOutput"></div>
+          <div class="json-output" id="jsonOutput"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      Powered by <a href="https://github.com/kreuzberg-dev/kreuzberg" target="_blank">kreuzberg-dev/kreuzberg</a> — MIT
+      License
+    </div>
+    <div class="install-row">
+      <span class="install-chip">pip install kreuzberg</span>
+      <span class="install-chip">npm install @kreuzberg/wasm</span>
+      <span class="install-chip">cargo add kreuzberg</span>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Import from the locally-hosted dist files.
+    // This works in a plain static HTML file because kreuzberg_wasm.js uses
+    // `new URL('kreuzberg_wasm_bg.wasm', import.meta.url)` — the browser
+    // resolves the .wasm path relative to the JS file itself, no bundler needed.
+    import { initWasm, extractFromFile } from './dist/index.js';
+
+    const $ = id => document.getElementById(id);
+    const dot = $('statusDot'), msg = $('statusMsg');
+    let ready = false;
+
+    try {
+      await initWasm();
+      ready = true;
+      dot.className = 'status-dot ready';
+      msg.textContent = 'Kreuzberg WASM ready — drop a file to extract';
+    } catch (e) {
+      dot.className = 'status-dot error';
+      msg.textContent = 'Failed to load WASM: ' + (e?.message ?? e);
+      console.error(e);
+    }
+
+
+    // ── Markdown renderer ──────────────────────────────────────────────────────
+    function renderMarkdown(md) {
+      let html = md
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        // fenced code blocks
+        .replace(/```([\w]*)?\n([\s\S]*?)```/gm, (_, lang, code) =>
+          `<pre><code${lang ? ` class="language-${lang}"` : ''}>${code.trimEnd()}</code></pre>`)
+        // headings
+        .replace(/^###### (.+)$/gm, '<h6>$1</h6>')
+        .replace(/^##### (.+)$/gm, '<h5>$1</h5>')
+        .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        // hr
+        .replace(/^---+$/gm, '<hr>')
+        // bold / italic / inline code
+        .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // blockquote
+        .replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>')
+        // unordered list items
+        .replace(/^[ \t]*[-*+] (.+)$/gm, '<li>$1</li>')
+        // ordered list items
+        .replace(/^[ \t]*\d+\. (.+)$/gm, '<oli>$1</oli>');
+
+      // wrap consecutive <li> in <ul>
+      html = html.replace(/(<li>[\s\S]*?<\/li>\n?)+/g, m => `<ul>${m}</ul>`);
+      // wrap consecutive <oli> in <ol>
+      html = html.replace(/(<oli>[\s\S]*?<\/oli>\n?)+/g, m =>
+        `<ol>${m.replace(/<oli>/g, '<li>').replace(/<\/oli>/g, '</li>')}</ol>`);
+
+      // paragraphs — lines not starting with a block element
+      const blockTags = /^<(h[1-6]|ul|ol|li|pre|blockquote|hr)/;
+      html = html.split('\n').map(line => {
+        if (!line.trim()) return '';
+        if (blockTags.test(line.trim())) return line;
+        return `<p>${line}</p>`;
+      }).join('\n');
+
+      return html;
+    }
+
+    // ── Drop zone ──────────────────────────────────────────────────────────────
+    const dropzone = $('dropzone');
+    const fileInput = $('fileInput');
+
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+      const f = e.dataTransfer?.files?.[0];
+      if (f) processFile(f);
+    });
+    fileInput.addEventListener('change', () => {
+      const f = fileInput.files?.[0];
+      if (f) processFile(f);
+    });
+    $('resetBtn').addEventListener('click', reset);
+
+    // ── Tabs ───────────────────────────────────────────────────────────────────
+    let activeTab = 'md';
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        activeTab = t.dataset.tab;
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        updateTabView();
+      });
+    });
+
+    function updateTabView() {
+      $('mdOutput').classList.toggle('hidden', activeTab !== 'md');
+      $('jsonOutput').classList.toggle('visible', activeTab === 'json');
+      $('outputLabel').textContent = activeTab === 'md' ? 'MARKDOWN' : 'JSON';
+    }
+
+    // ── Copy ───────────────────────────────────────────────────────────────────
+    let rawMarkdown = '';
+    let rawJson = '';
+
+    $('copyBtn').addEventListener('click', async () => {
+      const text = activeTab === 'md' ? rawMarkdown : rawJson;
+      if (!text) return;
+      await navigator.clipboard.writeText(text);
+      $('copyBtn').textContent = 'Copied!';
+      setTimeout(() => { $('copyBtn').textContent = 'Copy'; }, 1800);
+    });
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    function iconFor(name) {
+      const ext = (name.split('.').pop() ?? '').toLowerCase();
+      const m = {
+        pdf: '📕', docx: '📘', doc: '📘', xlsx: '📗', xls: '📗',
+        pptx: '📙', ppt: '📙', csv: '📊', tsv: '📊',
+        html: '🌐', xhtml: '🌐', xml: '🗂', epub: '📚',
+        eml: '✉️', msg: '✉️', zip: '🗜', tar: '🗜',
+        png: '🖼', jpg: '🖼', jpeg: '🖼', webp: '🖼', gif: '🖼', bmp: '🖼', tiff: '🖼',
+        txt: '📝', md: '📝', json: '🧩', yaml: '🧩',
+      };
+      return m[ext] ?? '📄';
+    }
+
+    function fmtBytes(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+      return (n / 1048576).toFixed(2) + ' MB';
+    }
+
+    function fmtNum(n) {
+      return n == null ? '—' : Number(n).toLocaleString();
+    }
+
+    function showError(text) {
+      $('errorMsg').textContent = text;
+      $('errorBanner').classList.add('visible');
+    }
+
+    function reset() {
+      $('resultPanel').classList.remove('visible');
+      $('errorBanner').classList.remove('visible');
+      dropzone.style.display = '';
+      fileInput.value = '';
+      rawMarkdown = '';
+      rawJson = '';
+      activeTab = 'md';
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'md'));
+      updateTabView();
+    }
+
+    // ── Process ────────────────────────────────────────────────────────────────
+    async function processFile(file) {
+      if (!ready) { showError('WASM module not ready yet — please wait.'); return; }
+
+      dropzone.style.display = 'none';
+      $('errorBanner').classList.remove('visible');
+      $('resultPanel').classList.add('visible');
+
+      $('fileIconEl').textContent = iconFor(file.name);
+      $('fileNameEl').textContent = file.name;
+      $('fileMetaEl').textContent = fmtBytes(file.size) + ' · ' + (file.type || 'auto-detect');
+
+      $('processingEl').classList.add('visible');
+      $('mdOutput').classList.add('hidden');
+      $('jsonOutput').classList.remove('visible');
+      $('timingChip').classList.remove('visible');
+
+      const t0 = performance.now();
+
+      try {
+        const result = await extractFromFile(file, file.type || null, {
+          extractTables: true,
+          extractMetadata: true,
+          outputFormat: 'markdown',
+        });
+        renderResult(result, performance.now() - t0);
+      } catch (e) {
+        $('processingEl').classList.remove('visible');
+        showError(e?.message ?? String(e));
+        dropzone.style.display = '';
+        $('resultPanel').classList.remove('visible');
+        console.error(e);
+      }
+    }
+
+    // ── JSON syntax highlighter ────────────────────────────────────────────────
+    function highlightJson(obj) {
+      const raw = JSON.stringify(obj, null, 2);
+      return raw.replace(
+        /("[^"]*"\s*:)|("[^"]*")|(-?\d+\.?\d*(?:[eE][+-]?\d+)?)|(true|false)|(null)/g,
+        (_, key, str, num, bool, nil) => {
+          if (key)  return `<span class="json-key">${key}</span>`;
+          if (str)  return `<span class="json-str">${str}</span>`;
+          if (num)  return `<span class="json-num">${num}</span>`;
+          if (bool) return `<span class="json-bool">${bool}</span>`;
+          if (nil)  return `<span class="json-null">${nil}</span>`;
+          return _;
+        }
+      );
+    }
+
+    // ── Render ─────────────────────────────────────────────────────────────────
+    function renderResult(result, elapsed) {
+      $('processingEl').classList.remove('visible');
+
+      const chip = $('timingChip');
+      chip.textContent = elapsed < 1000 ? `${elapsed.toFixed(0)} ms` : `${(elapsed / 1000).toFixed(2)} s`;
+      chip.classList.add('visible');
+
+      const content = result.content ?? '';
+      const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+
+      $('statChars').textContent = fmtNum(content.length);
+      $('statWords').textContent = fmtNum(words);
+      $('statPages').textContent = fmtNum(result.metadata?.pageCount ?? null);
+      $('statTables').textContent = fmtNum(result.tables?.length ?? 0);
+
+      // ── MD tab: render markdown as HTML
+      rawMarkdown = content;
+      $('mdOutput').innerHTML = content
+        ? renderMarkdown(content)
+        : '<p style="color:var(--dimmer);padding:20px">(no content extracted)</p>';
+      $('outputCount').textContent = fmtNum(content.length) + ' chars';
+      $('mdOutput').classList.remove('hidden');
+
+      // ── JSON tab: full result object, syntax-highlighted
+      rawJson = JSON.stringify(result, null, 2);
+      $('jsonOutput').innerHTML = highlightJson(result);
+
+      updateTabView();
+    }
+  </script>
+
+</body>
+
+</html>
